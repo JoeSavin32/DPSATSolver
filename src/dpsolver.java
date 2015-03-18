@@ -25,6 +25,8 @@ public class dpsolver {
 	// Students will define class Formula, possibly as 
 	// a separate public class
 	private class Formula { }
+	
+// testing this shit yo
 
 	Formula formula;
 
