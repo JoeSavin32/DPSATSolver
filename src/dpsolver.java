@@ -144,7 +144,7 @@ public class dpsolver {
 		}
 		
 		// Insert timing code here...
-		new dpsolver_skeleton().solve ( args[0] );
+		new dpsolver().solve ( args[0] );
 
 	}
 
