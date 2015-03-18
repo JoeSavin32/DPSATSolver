@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  * 
  * This material is based upon work supported by 
@@ -24,16 +32,51 @@ public class dpsolver {
 	
 	// Students will define class Formula, possibly as 
 	// a separate public class
-	private class Formula { }
 	
-// testing this shit yo
 
-	Formula formula;
+	static Formula formula;
 
-	// Read the provided input formula
-	void readFormula ( String fileName ) {
-		// Stub
-		formula = null;
+	 // Read the provided input formula
+	static void readFormula ( String fileName ) {
+		 ArrayList<Integer> equation = new ArrayList<Integer>();
+	        int literals = 0;
+            int finalClauses=0;
+	        try {
+	            int clauses = 1;
+	            File inputFile = new File("/Users/Sav/Downloads/inputs/" + fileName
+	                    + ".cnf");
+	 
+	            FileReader fileReader = new FileReader(inputFile);
+	            Scanner scanner = new Scanner(fileReader);
+	            String line = null;
+	            boolean done = false;
+	            while (!done && (line = scanner.nextLine()) != null) {
+	                if (line.charAt(0) == 'p') {
+	                    String[] pLine = new String[4];
+	                    pLine = line.split(" ");
+	                    literals = Integer.parseInt(pLine[2]);
+	                    clauses = Integer.parseInt(pLine[3]);
+	                    finalClauses=clauses;
+	                } else if (!(line.charAt(0) == 'c')) {
+	                    String[] variables;
+	                    variables = line.split(" ");
+	                    for (int i = 0; i < variables.length; i++) {
+	                        equation.add(Integer.parseInt(variables[i]));
+	                    }
+	                    //subtracts number of clauses so this loop will not over execute
+	                    clauses--;
+	                }
+	                if (clauses == 0) {
+	                    //signifies that whole formula has been grabbed
+	                    done = true;
+	                }
+	            }
+	 
+	        } catch (Exception ex) {
+	            //If no file is found with given parameter, error prints out.
+	            System.out.println("ERROR. File does not exist.");
+	        }
+		formula = new Formula(equation, finalClauses);
 		
 	}
 
@@ -138,15 +181,30 @@ public class dpsolver {
 	}
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		if (args.length < 1) {
-			System.err.println ("Usage: java dpsolver_skeleton cnf-formula");
-			System.exit(0);
-		}
+//		if (args.length < 1) {
+//			System.err.println ("Usage: java dpsolver_skeleton cnf-formula");
+//			System.exit(0);
+//		}
 		
 		// Insert timing code here...
-		new dpsolver().solve ( args[0] );
+//		new dpsolver().solve ( args[0] );
+		
+		BufferedReader stdin = new BufferedReader(new InputStreamReader(
+	            System.in));
+		
+		String input = " ";
+		while (!(input.equals(""))) {
+            System.out.println("Enter file name: ");
+            input = stdin.readLine();
+            if(!(input.equals(""))){
+ //           long start = System.currentTimeMillis();
+            readFormula(input);
+ //           long end = System.currentTimeMillis();
+//            System.out.println("Time: " + (end - start) + " milliseconds");
+            }
+        }
 
 	}
 
